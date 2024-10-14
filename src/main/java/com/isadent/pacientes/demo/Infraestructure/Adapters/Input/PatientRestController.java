@@ -31,7 +31,7 @@ public class PatientRestController {
      * @param writePatients The patient information to be saved.
      */
     @CrossOrigin
-    @PostMapping("/newPatient")
+    @PostMapping("/patients/create")
     public void newPaciente(@RequestBody WritePatients writePatients){
         saveNewPatientService.saveNewPaciente(writePatients);
     }
@@ -42,7 +42,7 @@ public class PatientRestController {
      * @return The patient information if found.
      */
     @CrossOrigin
-    @PostMapping("/findPatientByIdentification")
+    @PostMapping("/patients/search-by-identification")
     public ReadPatients findPacienteByCedula(@RequestBody String patientIdentification){
         return findNewPatient.findPacienteByCedula(patientIdentification);
     }
@@ -53,7 +53,7 @@ public class PatientRestController {
      * @return The patient information if found.
      */
     @CrossOrigin
-    @PostMapping("/findPatientByName")
+    @PostMapping("/patients/search-by-name")
     public ReadPatients findPacienteByNombre(@RequestBody Patient patientName){
         return findNewPatient.findPacienteByNombre(patientName);
     }
