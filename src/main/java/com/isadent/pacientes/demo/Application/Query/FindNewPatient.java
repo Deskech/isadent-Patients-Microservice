@@ -22,7 +22,7 @@ public class FindNewPatient {
      * @param patientIdentification The identification number of the patient to be found.
      * @return The ReadPatients object containing the patient's information, or null if not found.
      */
-    public ReadPatients findPacienteByCedula(String patientIdentification){
+    public ReadPatients findPatientByIdentification(String patientIdentification){
         return  repositoryReadPatients.findPatientByIdentification(patientIdentification);
     }
     /**
@@ -31,7 +31,7 @@ public class FindNewPatient {
      * @param patientName The Patient object containing the name of the patient to be found.
      * @return The ReadPatients object containing the patient's information, or null if not found.
      */
-    public ReadPatients findPacienteByNombre(Patient patientName){
+    public ReadPatients findPatientByName(Patient patientName){
         String name = patientName.getPatientName();
         return repositoryReadPatients.findPatientByName(name);
     }

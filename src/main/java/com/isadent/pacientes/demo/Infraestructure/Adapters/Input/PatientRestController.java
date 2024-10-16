@@ -43,8 +43,8 @@ public class PatientRestController {
      */
     @CrossOrigin
     @PostMapping("/patients/search-by-identification")
-    public ReadPatients findPacienteByCedula(@RequestBody String patientIdentification){
-        return findNewPatient.findPacienteByCedula(patientIdentification);
+    public ReadPatients searchByIdentification(@RequestBody String patientIdentification){
+        return findNewPatient.findPatientByIdentification(patientIdentification);
     }
     /**
      * Endpoint to find a patient by their name.
@@ -54,8 +54,8 @@ public class PatientRestController {
      */
     @CrossOrigin
     @PostMapping("/patients/search-by-name")
-    public ReadPatients findPacienteByNombre(@RequestBody Patient patientName){
-        return findNewPatient.findPacienteByNombre(patientName);
+    public ReadPatients searchByName(@RequestBody Patient patientName){
+        return findNewPatient.findPatientByName(patientName);
     }
 
 }
