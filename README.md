@@ -19,11 +19,12 @@ This microservice receives information about new patients, stores it, and also r
 - **MySQL**
 
 ## Documentation
+Comming soon...
 ## Examples
 
 ### New Patient Request
 ```http
-POST /payments/history
+POST /patients/create
 
 Content-Type: application/json
 ```
@@ -38,6 +39,11 @@ Content-Type: application/json
 ### Search patient's information
 
 **Search the patient by name:**
+```http
+POST /patients/search-by-name
+
+Content-Type: application/json
+```
 * Input:
  ```json
     {
@@ -56,6 +62,12 @@ Content-Type: application/json
     }
 ```
 **Search the patient by identification number:**
+```http
+POST /patients/search-by-identification
+
+Content-Type: application/json
+```
+
 * Input:
  ```json
     {
@@ -73,3 +85,4 @@ Content-Type: application/json
 }
 ```
 ## License
+Comming soon...
