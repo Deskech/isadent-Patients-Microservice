@@ -36,6 +36,11 @@ Content-Type: application/json
 ### Search patient's information
 
 **Search the patient by name:**
+```http
+POST /patients/search-by-name
+
+Content-Type: application/json
+```
 * Input:
  ```json
     {
