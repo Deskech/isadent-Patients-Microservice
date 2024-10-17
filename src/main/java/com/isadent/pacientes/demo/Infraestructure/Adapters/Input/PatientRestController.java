@@ -33,7 +33,7 @@ public class PatientRestController {
     @CrossOrigin
     @PostMapping("/patients/create")
     public void newPaciente(@RequestBody WritePatients writePatients){
-        saveNewPatientService.saveNewPaciente(writePatients);
+        saveNewPatientService.saveNewPatient(writePatients);
     }
     /**
      * Endpoint to find a patient by their identification number.
