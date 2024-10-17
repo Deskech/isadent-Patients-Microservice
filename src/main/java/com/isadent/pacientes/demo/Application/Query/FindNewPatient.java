@@ -3,6 +3,7 @@ package com.isadent.pacientes.demo.Application.Query;
 import com.isadent.pacientes.demo.Application.Dtos.Patient;
 import com.isadent.pacientes.demo.Domain.Model.ReadPatients;
 import com.isadent.pacientes.demo.Domain.Repository.RepositoryReadPatients;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,6 +32,7 @@ public class FindNewPatient {
      * @param patientName The Patient object containing the name of the patient to be found.
      * @return The ReadPatients object containing the patient's information, or null if not found.
      */
+    @Cacheable(value = "patientInformation", key = "#patientName.patientName")
     public ReadPatients findPatientByName(Patient patientName){
         String name = patientName.getPatientName();
         return repositoryReadPatients.findPatientByName(name);

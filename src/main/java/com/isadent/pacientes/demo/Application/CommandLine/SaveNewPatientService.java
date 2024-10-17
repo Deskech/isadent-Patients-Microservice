@@ -26,7 +26,5 @@ public class SaveNewPatientService {
     public void saveNewPaciente(WritePatients newPatient) {
         repositoryWritePatients.saveNewPatient(newPatient);
         newPacienteEvent.publishNewPatient(newPatient);
-
-
     }
 }

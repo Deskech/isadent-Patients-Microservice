@@ -3,6 +3,8 @@ package com.isadent.pacientes.demo.Domain.Model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @SuppressWarnings(value = "all")
 /**
  * Represents a patient record retrieved from the query side.
@@ -10,7 +12,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class ReadPatients {
+public class ReadPatients implements Serializable {
     private int id;
     private String patientIdentification;
     private String patientDirection;
