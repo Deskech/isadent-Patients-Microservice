@@ -44,6 +44,7 @@ POST /patients/search-by-name
 
 Content-Type: application/json
 ```
+
 * Input:
  ```json
     {
