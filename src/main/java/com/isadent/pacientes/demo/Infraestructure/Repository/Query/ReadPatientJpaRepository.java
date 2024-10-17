@@ -25,7 +25,7 @@ public interface ReadPatientJpaRepository extends JpaRepository<EntityReadPatien
      * @return patient's information found or null
      */
     @Query("select p from EntityReadPatient p where p.patientName= :patientName")
-    EntityReadPatient findPacienteByNombre(@Param("patientName") String patientName);
+    EntityReadPatient findPacienteByName(@Param("patientName") String patientName);
 
 
 }

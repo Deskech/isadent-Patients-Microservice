@@ -1,6 +1,6 @@
 package com.isadent.pacientes.demo.Application.CommandLine;
 
-import com.isadent.pacientes.demo.Domain.Events.NewPacienteEvent;
+import com.isadent.pacientes.demo.Domain.Events.NewPatientEvent;
 import com.isadent.pacientes.demo.Domain.Model.WritePatients;
 import com.isadent.pacientes.demo.Domain.Repository.RepositoryWritePatients;
 import org.springframework.stereotype.Service;
@@ -12,21 +12,19 @@ import org.springframework.stereotype.Service;
 public class SaveNewPatientService {
 
     private final RepositoryWritePatients repositoryWritePatients;
-    private final NewPacienteEvent newPacienteEvent;
+    private final NewPatientEvent newPatientEvent;
 
-    public SaveNewPatientService(RepositoryWritePatients repositoryWritePatients, NewPacienteEvent newPacienteEvent) {
+    public SaveNewPatientService(RepositoryWritePatients repositoryWritePatients, NewPatientEvent newPatientEvent) {
         this.repositoryWritePatients = repositoryWritePatients;
-        this.newPacienteEvent = newPacienteEvent;
+        this.newPatientEvent = newPatientEvent;
     }
     /**
      * Saves a new patient and publishes an event about the new patient.
      *
      * @param newPatient The WritePatients object containing the information of the patient to be saved.
      */
-    public void saveNewPaciente(WritePatients newPatient) {
+    public void saveNewPatient(WritePatients newPatient) {
         repositoryWritePatients.saveNewPatient(newPatient);
-        newPacienteEvent.publishNewPatient(newPatient);
-
-
+        newPatientEvent.publishNewPatient(newPatient);
     }
 }

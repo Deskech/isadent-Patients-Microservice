@@ -11,7 +11,6 @@ This microservice receives information about new patients, stores it, and also r
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Deskech/isadent-Patients-Microservice/
 ## Prerequisites
 - **Java 17**
 - **Maven**
@@ -23,7 +22,6 @@ This microservice receives information about new patients, stores it, and also r
 
 ### New Patient Request
 ```http
-POST /payments/history
 
 Content-Type: application/json
 ```
@@ -73,4 +71,3 @@ Content-Type: application/json
 }
 ```
 ## License
-

@@ -38,7 +38,7 @@ public class RepositoryReadPatientsImp implements RepositoryReadPatients {
      */
     @Override
     public ReadPatients findPatientByName(String patientName) {
-       EntityReadPatient patient =  readPatientJpaRepository.findPacienteByNombre(patientName);
+       EntityReadPatient patient =  readPatientJpaRepository.findPacienteByName(patientName);
         return readPacienteMapper.toDomain(patient);
     }
 }
