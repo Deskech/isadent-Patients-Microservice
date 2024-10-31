@@ -2,10 +2,14 @@ package com.isadent.pacientes.demo.Infraestructure.Persistance;
 
 import com.isadent.pacientes.demo.Domain.Model.ReadPatients;
 import com.isadent.pacientes.demo.Domain.Repository.RepositoryReadPatients;
-import com.isadent.pacientes.demo.Infraestructure.Entities.Query.EntityReadPatient;
+import com.isadent.pacientes.demo.Infraestructure.Mappers.ReadPatientMapper;
 import com.isadent.pacientes.demo.Infraestructure.Mappers.ReadPatientMapperImp;
-import com.isadent.pacientes.demo.Infraestructure.Repository.Query.ReadPatientJpaRepository;
+import org.springframework.data.redis.core.ReactiveHashOperations;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
+
+import java.util.Map;
+
 /**
  * Implementation of the RepositoryReadPatients interface.
  * This class provides methods for retrieving patient information from the database.
@@ -13,12 +17,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class RepositoryReadPatientsImp implements RepositoryReadPatients {
 
-    private final ReadPatientMapperImp readPacienteMapper;
-    private final ReadPatientJpaRepository readPatientJpaRepository;
-    public RepositoryReadPatientsImp(ReadPatientMapperImp readPacienteMapperImp, ReadPatientJpaRepository readPatientJpaRepository){
-        this.readPacienteMapper= readPacienteMapperImp;
-        this.readPatientJpaRepository = readPatientJpaRepository;
+    private final ReadPatientMapper readPatientMapper;
+    private final ReactiveHashOperations<String, String, String> redisOperations;
+
+
+    public RepositoryReadPatientsImp(ReadPatientMapperImp readPatientMapper,
+                                     ReactiveHashOperations<String, String, String> redisOperations
+    ) {
+        this.readPatientMapper = readPatientMapper;
+        this.redisOperations = redisOperations;
+
     }
+
     /**
      * Finds a patient by their identification number.
      *
@@ -26,10 +36,30 @@ public class RepositoryReadPatientsImp implements RepositoryReadPatients {
      * @return A ReadPatients object representing the found patient, or null if not found.
      */
     @Override
-    public ReadPatients findPatientByIdentification(String identification) {
-       EntityReadPatient patient=  readPatientJpaRepository.findPatientByPatientIdentification(identification);
-        return readPacienteMapper.toDomain(patient);
+    public Mono<ReadPatients> findPatientByIdentification(String identification) {
+
+        String patientIndex = "patientIdentification:" + identification;
+
+        return redisOperations.entries(patientIndex)
+                .filter(entry -> "patientKey".equals(entry.getKey()))
+                .singleOrEmpty()
+                .flatMap(entry -> {
+                    String patientKey = entry.getValue();
+
+                    if (patientKey == null) {
+                        return Mono.error(new RuntimeException("Patient not found with id: " + identification));
+                    }
+
+                    return redisOperations.entries(patientKey)
+                            .collectMap(Map.Entry::getKey, Map.Entry::getValue);
+
+                })
+                .map(readPatientMapper::toDomain)
+                .switchIfEmpty(Mono.error(new RuntimeException("Patient Not Found: " + identification)));
+
+
     }
+
     /**
      * Finds a patient by their name.
      *
@@ -37,8 +67,14 @@ public class RepositoryReadPatientsImp implements RepositoryReadPatients {
      * @return A ReadPatients object representing the found patient, or null if not found.
      */
     @Override
-    public ReadPatients findPatientByName(String patientName) {
-       EntityReadPatient patient =  readPatientJpaRepository.findPacienteByName(patientName);
-        return readPacienteMapper.toDomain(patient);
+    public Mono<ReadPatients> findPatientByName(String patientName) {
+        String patientKey = "patient:" + patientName;
+
+        return redisOperations.entries(patientKey)
+                .collectMap(Map.Entry::getKey, Map.Entry::getValue)
+                .map(readPatientMapper::toDomain)
+                .switchIfEmpty(Mono.error(new RuntimeException("Patient not found: " + patientName)))
+                .onErrorReturn(new ReadPatients("N/A", "N/A", "Patient not found"));
+
     }
 }

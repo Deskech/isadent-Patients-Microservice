@@ -1,23 +1,28 @@
 package com.isadent.pacientes.demo.Infraestructure.Mappers;
 
 import com.isadent.pacientes.demo.Domain.Model.ReadPatients;
-import com.isadent.pacientes.demo.Infraestructure.Entities.Query.EntityReadPatient;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
 /**
  * Implementation of the ReadPatientMapper interface.
- * This class provides the logic for converting EntityReadPatient objects into ReadPatients domain objects.
+ * This class provides the logic for converting data objects into ReadPatients domain objects.
  */
 @Component
 public class ReadPatientMapperImp implements ReadPatientMapper {
     /**
-     * Converts an EntityReadPatient to a ReadPatients domain object.
+     * Converts a data to a ReadPatients domain object.
      *
-     * @param entityReadPatient The EntityReadPatient object to be converted.
+     * @param data The data object to be converted.
      * @return A ReadPatients domain object containing the same data as the provided entity.
      */
     @Override
-    public ReadPatients toDomain(EntityReadPatient entityReadPatient) {
-        return new ReadPatients(entityReadPatient.getId(), entityReadPatient.getPatientIdentification(),
-                entityReadPatient.getPatientDirection(), entityReadPatient.getPatientName());
+    public ReadPatients toDomain(Map<String, String> data) {
+
+        return new ReadPatients(data.get("patientIdentification"),
+                data.get("patientDirection"),
+                data.get("patientName")
+        );
     }
 }

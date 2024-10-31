@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 /**
  * REST controller for managing patient-related operations.
@@ -38,13 +39,13 @@ public class PatientRestController {
     /**
      * Endpoint to find a patient by their identification number.
      *
-     * @param patientIdentification The identification number of the patient.
+     * @param patient The identification number of the patient.
      * @return The patient information if found.
      */
     @CrossOrigin
     @PostMapping("/patients/search-by-identification")
-    public ReadPatients searchByIdentification(@RequestBody String patientIdentification){
-        return findNewPatient.findPatientByIdentification(patientIdentification);
+    public Mono<ReadPatients> searchByIdentification(@RequestBody Patient patient){
+        return findNewPatient.findPatientByIdentification(patient);
     }
     /**
      * Endpoint to find a patient by their name.
@@ -54,7 +55,7 @@ public class PatientRestController {
      */
     @CrossOrigin
     @PostMapping("/patients/search-by-name")
-    public ReadPatients searchByName(@RequestBody Patient patientName){
+    public Mono<ReadPatients> searchByName(@RequestBody Patient patientName){
         return findNewPatient.findPatientByName(patientName);
     }
 

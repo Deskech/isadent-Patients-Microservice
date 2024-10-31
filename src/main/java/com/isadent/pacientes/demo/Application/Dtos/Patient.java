@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 public class Patient implements Serializable {
     private String patientName;
-   
+    private String patientIdentification;
 
     public Patient(){}
 }
