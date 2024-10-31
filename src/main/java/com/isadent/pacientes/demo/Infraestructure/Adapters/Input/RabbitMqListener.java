@@ -3,11 +3,11 @@ package com.isadent.pacientes.demo.Infraestructure.Adapters.Input;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isadent.pacientes.demo.Domain.Events.ListenToNewPatientEvent;
 import com.isadent.pacientes.demo.Domain.Model.ReadPatients;
-import com.isadent.pacientes.demo.Infraestructure.Entities.Query.EntityReadPatient;
 import com.isadent.pacientes.demo.Infraestructure.Repository.Query.ReadPatientActualization;
 import lombok.SneakyThrows;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 /**
  * RabbitMQ listener that listens for new patient events from the command side of the system.
@@ -17,12 +17,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class RabbitMqListener implements ListenToNewPatientEvent<String> {
 
-    private final ReadPatientActualization readPatientActualization;
-    private final ObjectMapper objectMapper;
 
-    public RabbitMqListener(ReadPatientActualization readPatientActualization, ObjectMapper objectMapper) {
-        this.readPatientActualization = readPatientActualization;
+    private final ObjectMapper objectMapper;
+    private final ReadPatientActualization readPatientActualization;
+
+    public RabbitMqListener(ObjectMapper objectMapper, ReadPatientActualization readPatientActualization
+
+    ) {
+
         this.objectMapper = objectMapper;
+        this.readPatientActualization = readPatientActualization;
+
     }
 
     /**
@@ -30,20 +35,18 @@ public class RabbitMqListener implements ListenToNewPatientEvent<String> {
      * Converts the event message from JSON to a ReadPatients object and saves the patient to the query side.
      *
      * @param event The JSON string representing the new patient event.
+     * @return saves the patients object in the redis database
      */
     @SneakyThrows
     @RabbitListener(queues = "pacientesQueue")
-    public void listenToNewPatient(String event) {
+    public Mono<Void> listenToNewPatient(String event) {
+
         // since we receive a string we map it back to class
         ReadPatients readPatients = objectMapper.readValue(event, ReadPatients.class);
-        // we set up our jpa Entity to store it in the query side
-        EntityReadPatient newPaciente = new EntityReadPatient();
-        newPaciente.setId(readPatients.getId());
-        newPaciente.setPatientIdentification(readPatients.getPatientIdentification());
-        newPaciente.setPatientName(readPatients.getPatientName());
-        newPaciente.setPatientDirection(readPatients.getPatientDirection());
-        // update the patient's record in the query side
-        readPatientActualization.save(newPaciente);
+
+        //we save the necessary elements in the redis database (Query line)
+        return readPatientActualization.saveNewPatient(readPatients);
+
     }
 
 }

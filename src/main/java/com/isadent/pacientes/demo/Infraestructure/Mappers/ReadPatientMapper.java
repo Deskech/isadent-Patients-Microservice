@@ -1,17 +1,20 @@
 package com.isadent.pacientes.demo.Infraestructure.Mappers;
 
 import com.isadent.pacientes.demo.Domain.Model.ReadPatients;
-import com.isadent.pacientes.demo.Infraestructure.Entities.Query.EntityReadPatient;
+
+import java.util.Map;
+
 /**
- * Mapper interface for converting EntityReadPatient objects to ReadPatients domain objects.
+ * Mapper interface for converting data objects to ReadPatients domain objects.
  */
 public interface ReadPatientMapper {
     /**
-     * Converts an EntityReadPatient to a ReadPatients domain object.
+     * Converts a data object comming from redis database to a ReadPatients domain object.
      *
-     * @param entityReadPatient The EntityReadPatient object to be converted.
+     * @param data object to be converted.
      * @return The corresponding ReadPatients domain object.
      */
-    ReadPatients toDomain(EntityReadPatient entityReadPatient);
+    ReadPatients toDomain(Map<String, String> data);
+
 
 }

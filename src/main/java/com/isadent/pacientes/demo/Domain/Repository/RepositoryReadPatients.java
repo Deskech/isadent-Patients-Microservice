@@ -1,6 +1,7 @@
 package com.isadent.pacientes.demo.Domain.Repository;
 
 import com.isadent.pacientes.demo.Domain.Model.ReadPatients;
+import reactor.core.publisher.Mono;
 
 @SuppressWarnings(value = "all")
 /**
@@ -14,12 +15,12 @@ public interface RepositoryReadPatients {
      * @param patientIdentification The identification number of the patient.
      * @return A ReadPatients object containing the patient's information.
      */
-    ReadPatients findPatientByIdentification(String patientIdentification);
+   Mono<ReadPatients> findPatientByIdentification(String patientIdentification);
     /**
      * Finds a patient by their name.
      *
      * @param patientName The name of the patient.
      * @return A ReadPatients object containing the patient's information.
      */
-    ReadPatients findPatientByName(String patientName);
+    Mono<ReadPatients> findPatientByName(String patientName);
 }

@@ -2,6 +2,8 @@
 
 This microservice receives information about new patients, stores it, and also returns the patient's information via a POST request in the controller. It is also responsible for publishing events to the billing microservice to maintain the persistence of the patients.
 
+__This microservice implements cqrs and in this version the Query line database has benn changed from Mysql to Reactive Redis database for latency improvement__
+
 ## Table of Contents
 - [Installation](#installation)
 - [JavaDocs](#Documentation)

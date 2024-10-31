@@ -13,15 +13,15 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class ReadPatients implements Serializable {
-    private int id;
+
     private String patientIdentification;
     private String patientDirection;
     private String patientName;
 
-    public ReadPatients(int id, String patientIdentification, String patientDirection, String patientName){
-        this.id= id;
-        this.patientIdentification= patientIdentification;
-        this.patientDirection= patientDirection;
+    public ReadPatients(String patientIdentification, String patientDirection, String patientName) {
+
+        this.patientIdentification = patientIdentification;
+        this.patientDirection = patientDirection;
         this.patientName = patientName;
     }
 }
